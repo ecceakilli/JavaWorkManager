@@ -12,18 +12,32 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //refreshDatabase sınıfına göndereceğimiz datayı tanımladık
-        Data data = new Data.Builder().putInt("intKey",1).build();
+
+
+
+
+            //refreshDatabase sınıfına göndereceğimiz datayı tanımladık
+       // Data data = new Data.Builder().putInt("intKey",1).build();
 
         //bazı constraitler belirtip sartlar koyabiliyoruz. orn:
         Constraints constraints = new Constraints.Builder()
@@ -46,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
      */
         //periyodik olan work request
-        WorkRequest workRequest = new PeriodicWorkRequest.Builder(RefreshDatabase.class,15,TimeUnit.HOURS)
+        WorkRequest workRequest = new PeriodicWorkRequest.Builder(RefreshDatabase.class,15,TimeUnit.MINUTES)
                 .setConstraints(constraints)
-                .setInputData(data)
+             //   .setInputData(data)
                 .build();
         WorkManager.getInstance(this).enqueue(workRequest);
 
@@ -63,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("failed");
                 }
             }
+
         });
+
         //WorkManager.getInstance(this).cancelAllWork();   fail oldugnda nasıl iptal edebilirim
 
         /*
